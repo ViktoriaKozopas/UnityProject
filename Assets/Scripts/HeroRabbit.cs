@@ -6,16 +6,17 @@ public class HeroRabbit : MonoBehaviour {
 
     public float rabbitSpeed = 1;
     Rigidbody2D rabbitBody = null;
-  
+    float value = 0;
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start () {
         rabbitBody = this.GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
     {
-        float value = Input.GetAxis("Horizontal");
+        value = Input.GetAxis("Horizontal");
         if (Mathf.Abs(value) > 0)
         {
             Vector2 vel = rabbitBody.velocity;
@@ -35,7 +36,7 @@ public class HeroRabbit : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+ //   void Update () {
 		
-	}
+	//}
 }
