@@ -17,6 +17,18 @@ public class HeroRabbit : MonoBehaviour {
     void FixedUpdate()
     {
         value = Input.GetAxis("Horizontal");
+        // animation controller
+        Animator animator = GetComponent<Animator>();
+        if (Mathf.Abs(value) > 0)
+        {
+            animator.SetBool("run", true);
+        }
+        else
+        {
+            animator.SetBool("run", false);
+        }
+
+        // move
         if (Mathf.Abs(value) > 0)
         {
             Vector2 vel = rabbitBody.velocity;
@@ -24,6 +36,7 @@ public class HeroRabbit : MonoBehaviour {
             rabbitBody.velocity = vel;
         }
 
+        // flip
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         if (value < 0)
         {
