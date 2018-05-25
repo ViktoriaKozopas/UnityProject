@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 5255944}
   - component: {fileID: 5255946}
   - component: {fileID: 5255945}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform-03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 17042453}
   - component: {fileID: 17042452}
   - component: {fileID: 17042450}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform-01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06099b8888a55fe43ad6e82a7702bbc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rabbitSpeed: 1
+  rabbitSpeed: 3
+  MaxJumpTime: 2
+  JumpSpeed: 2
 --- !u!95 &1166469909
 Animator:
   serializedVersion: 3
@@ -684,7 +686,7 @@ GameObject:
   - component: {fileID: 2078016482}
   - component: {fileID: 2078016484}
   - component: {fileID: 2078016483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform-02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
