@@ -54,4 +54,15 @@ public class MovingPlatform : MonoBehaviour {
         nextPosition = nextPosition == pointA ? pointB : pointA;
         platformTimer = 0;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        collision.gameObject.layer = 8;
+        collision.transform.SetParent(childTransform);
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        collision.transform.SetParent(null);
+    }
 }

@@ -14,10 +14,15 @@ public class HeroRabbit : MonoBehaviour {
     public float MaxJumpTime = 2f;
     public float JumpSpeed = 2f;
 
+   // Transform heroParent = null;
+
     void Start () {
         rabbitBody = this.GetComponent<Rigidbody2D>();
         //Зберігаємо позицію кролика на початку
         LevelController.current.setStartPosition(transform.position);
+
+        //Зберегти стандартний батьківський GameObject
+       // this.heroParent = this.transform.parent;
     }
 
     void FixedUpdate()
@@ -37,6 +42,7 @@ public class HeroRabbit : MonoBehaviour {
 
         move();
         jump();
+       // mPlatform();
     }
 private void move()
     {
@@ -111,6 +117,48 @@ private void jump()
         else
         {
             animator.SetBool("jump", true);
+        }
+    }
+    //private void mPlatform()
+    //{
+    //    Vector3 from = transform.position + Vector3.up * 0.3f;
+    //    Vector3 to = transform.position + Vector3.down * 0.1f;
+    //    int layer_id = 1 << LayerMask.NameToLayer("Ground");
+
+    //    //Згадуємо ground check
+    //    RaycastHit2D hit = Physics2D.Linecast(from, to, layer_id);
+    //    Debug.DrawLine(from, to, Color.red);
+    //    if (hit)
+    //    {
+    //        //Перевіряємо чи ми опинились на платформі
+    //        if (hit.transform != null
+    //        && hit.transform.GetComponent<MovingPlatform>() != null)
+    //        {
+    //            //Приліпаємо до платформи
+    //            SetNewParent(this.transform, hit.transform);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        //Ми в повітрі відліпаємо під платформи
+    //        SetNewParent(this.transform, this.heroParent);
+    //    }
+    //}
+
+    static void SetNewParent(Transform obj, Transform new_parent)
+    {
+        if (obj.transform.parent != new_parent)
+        {
+            //Засікаємо позицію у Глобальних координатах
+            Vector3 pos = obj.transform.position;
+
+            //Встановлюємо нового батька
+            obj.transform.parent = new_parent;
+
+            //Після зміни батька координати кролика зміняться
+            //Оскільки вони тепер відносно іншого об’єкта
+            //повертаємо кролика в ті самі глобальні координати
+            obj.transform.position = pos;
         }
     }
 }
