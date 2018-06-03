@@ -9,13 +9,12 @@ public class MovingPlatform : MonoBehaviour {
     Vector3 pointB;
     Vector3 nextPosition;
 
-    [SerializeField]
-    private float speed;
+    public float speed;
+    public float delay;
+    private float platformTimer;
 
-    [SerializeField]
-    private Transform childTransform;
-    [SerializeField]
-    private Transform transformB;
+    public Transform childTransform;
+    public Transform transformB;
 
     // Use this for initialization
     void Start()
@@ -32,23 +31,27 @@ public class MovingPlatform : MonoBehaviour {
 
     private void move()
     {
-        childTransform.localPosition = Vector3.MoveTowards(childTransform.localPosition, nextPosition, speed*Time.deltaTime);
-
         if (Vector3.Distance(childTransform.localPosition, nextPosition) < 0.02f)
         {
-            changeDestination();
+            if (platformTimer >= delay)
+            {
+                changeDestination();
+            }
+            else
+            {
+                platformTimer += Time.deltaTime;
+            }
+            
+        }
+        else
+        {
+            childTransform.localPosition = Vector3.MoveTowards(childTransform.localPosition, nextPosition, speed * Time.deltaTime);
         }
     }
 
     private void changeDestination()
     {
         nextPosition = nextPosition == pointA ? pointB : pointA;
+        platformTimer = 0;
     }
-
-    //bool isArrived(Vector3 pos, Vector3 target)
-    //{
-    //    pos.z = 0;
-    //    target.z = 0;
-    //    return Vector3.Distance(pos, target) < 0.02f;
-    //}
 }
