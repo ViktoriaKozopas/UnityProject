@@ -55,14 +55,14 @@ public class MovingPlatform : MonoBehaviour {
         platformTimer = 0;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        collision.gameObject.layer = 8;
-        collision.transform.SetParent(childTransform);
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    collision.gameObject.layer = 8;
+    //    collision.transform.SetParent(childTransform);
+    //}
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        collision.transform.SetParent(null);
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    collision.transform.SetParent(null);
+    //}
 }

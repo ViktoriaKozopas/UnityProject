@@ -14,7 +14,7 @@ public class HeroRabbit : MonoBehaviour {
     public float MaxJumpTime = 2f;
     public float JumpSpeed = 2f;
 
-   // Transform heroParent = null;
+    Transform heroParent = null;
 
     void Start () {
         rabbitBody = this.GetComponent<Rigidbody2D>();
@@ -22,7 +22,7 @@ public class HeroRabbit : MonoBehaviour {
         LevelController.current.setStartPosition(transform.position);
 
         //Зберегти стандартний батьківський GameObject
-       // this.heroParent = this.transform.parent;
+        this.heroParent = this.transform.parent;
     }
 
     void FixedUpdate()
@@ -42,7 +42,7 @@ public class HeroRabbit : MonoBehaviour {
 
         move();
         jump();
-       // mPlatform();
+        mPlatform();
     }
 private void move()
     {
@@ -119,31 +119,31 @@ private void jump()
             animator.SetBool("jump", true);
         }
     }
-    //private void mPlatform()
-    //{
-    //    Vector3 from = transform.position + Vector3.up * 0.3f;
-    //    Vector3 to = transform.position + Vector3.down * 0.1f;
-    //    int layer_id = 1 << LayerMask.NameToLayer("Ground");
+private void mPlatform()
+    {
+        Vector3 from = transform.position + Vector3.up * 0.3f;
+        Vector3 to = transform.position + Vector3.down * 0.1f;
+        int layer_id = 1 << LayerMask.NameToLayer("Ground");
 
-    //    //Згадуємо ground check
-    //    RaycastHit2D hit = Physics2D.Linecast(from, to, layer_id);
-    //    Debug.DrawLine(from, to, Color.red);
-    //    if (hit)
-    //    {
-    //        //Перевіряємо чи ми опинились на платформі
-    //        if (hit.transform != null
-    //        && hit.transform.GetComponent<MovingPlatform>() != null)
-    //        {
-    //            //Приліпаємо до платформи
-    //            SetNewParent(this.transform, hit.transform);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        //Ми в повітрі відліпаємо під платформи
-    //        SetNewParent(this.transform, this.heroParent);
-    //    }
-    //}
+        //Згадуємо ground check
+        RaycastHit2D hit = Physics2D.Linecast(from, to, layer_id);
+        Debug.DrawLine(from, to, Color.red);
+        if (hit)
+        {
+            //Перевіряємо чи ми опинились на платформі
+            if (hit.transform != null
+            && hit.transform.GetComponentInParent<MovingPlatform>() != null)
+            {
+                //Приліпаємо до платформи
+                SetNewParent(this.transform, hit.transform);
+            }
+        }
+        else
+        {
+            //Ми в повітрі відліпаємо під платформи
+            SetNewParent(this.transform, this.heroParent);
+        }
+    }
 
     static void SetNewParent(Transform obj, Transform new_parent)
     {
