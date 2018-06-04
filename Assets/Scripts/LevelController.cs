@@ -41,4 +41,9 @@ public class LevelController : MonoBehaviour {
     {
         this.crystals++;
     }
+
+    public void addMushroom()
+    {
+
+    }
 }
