@@ -351,6 +351,11 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114025273195947512, guid: 7539369a4633f7d45bab49e7c7d55443,
+        type: 2}
+      propertyPath: deathAnimation
+      value: 
+      objectReference: {fileID: 7400000, guid: 1d39424efad30a147b7d9bf79bfa0f96, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7539369a4633f7d45bab49e7c7d55443, type: 2}
   m_IsPrefabParent: 0
@@ -1079,7 +1084,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4875210522691032, guid: cc424887dffeb52409e974fb558bc479, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4875210522691032, guid: cc424887dffeb52409e974fb558bc479, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1600,11 +1605,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4279313439099626, guid: a21d2f005a00829428528f91b9665ebb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 24.76
+      value: 25.05
       objectReference: {fileID: 0}
     - target: {fileID: 4279313439099626, guid: a21d2f005a00829428528f91b9665ebb, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0.67
       objectReference: {fileID: 0}
     - target: {fileID: 4279313439099626, guid: a21d2f005a00829428528f91b9665ebb, type: 2}
       propertyPath: m_LocalPosition.z

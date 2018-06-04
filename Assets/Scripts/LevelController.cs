@@ -5,6 +5,8 @@ using UnityEngine;
 public class LevelController : MonoBehaviour {
 
     public static LevelController current;
+    public static float mushroomMax = 1.4f;
+
     Vector3 startingPosition;
 
     private int coins = 0;
@@ -40,10 +42,5 @@ public class LevelController : MonoBehaviour {
     public void addCrystal()
     {
         this.crystals++;
-    }
-
-    public void addMushroom()
-    {
-
     }
 }

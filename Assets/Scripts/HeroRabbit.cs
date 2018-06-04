@@ -8,11 +8,21 @@ public class HeroRabbit : MonoBehaviour {
     Rigidbody2D rabbitBody = null;
     float value = 0;
 
+    public AnimationClip deathAnimation;
+    public bool isDead = false;
+    private float deathTimer;
+
     bool isGrounded = false;
     bool JumpActive = false;
     float JumpTime = 0f;
     public float MaxJumpTime = 2f;
     public float JumpSpeed = 2f;
+
+    [HideInInspector]
+    public bool hasMushroom = false;
+
+    public float bombTime = 4f;
+    float _bombTime;
 
     Transform heroParent = null;
 
@@ -27,22 +37,40 @@ public class HeroRabbit : MonoBehaviour {
 
     void FixedUpdate()
     {
-        value = Input.GetAxis("Horizontal");
-
-        // animation controller
-        Animator animator = GetComponent<Animator>();
-        if (Mathf.Abs(value) > 0)
+        if(!isDead)
         {
-            animator.SetBool("run", true);
+            value = Input.GetAxis("Horizontal");
+
+            // animation controller
+            Animator animator = GetComponent<Animator>();
+            if (Mathf.Abs(value) > 0)
+            {
+                animator.SetBool("run", true);
+            }
+            else
+            {
+                animator.SetBool("run", false);
+            }
+
+            move();
+            jump();
+            mPlatform();
         }
         else
         {
-            animator.SetBool("run", false);
-        }
 
-        move();
-        jump();
-        mPlatform();
+            if (deathTimer >= this.deathAnimation.length)
+            {
+                LevelController.current.onRabitDeath(this);
+                deathTimer = 0;
+                isDead = false;
+            }
+            else
+            {
+                deathTimer += Time.deltaTime;
+            }
+        }
+        
     }
 private void move()
     {
