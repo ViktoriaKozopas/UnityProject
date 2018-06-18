@@ -20,10 +20,10 @@ public class HeroRabbit : MonoBehaviour {
 
     [HideInInspector]
     public bool hasMushroom = false;
-
+/* //if timer
     public float bombTime = 4f;
     float _bombTime;
-
+*/
     Transform heroParent = null;
 
     void Start () {
@@ -173,7 +173,7 @@ private void mPlatform()
         }
     }
 
-    static void SetNewParent(Transform obj, Transform new_parent)
+static void SetNewParent(Transform obj, Transform new_parent)
     {
         if (obj.transform.parent != new_parent)
         {

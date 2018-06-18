@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour {
 
-    //public Vector3 MoveBy;
     Vector3 pointA;
     Vector3 pointB;
     Vector3 nextPosition;
