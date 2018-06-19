@@ -100,7 +100,7 @@ private void move()
 private void jump()
     {
         //JUMP
-        Vector3 from = transform.position + Vector3.up * 0.3f;
+        Vector3 from = transform.position + Vector3.up * 0.5f;
         Vector3 to = transform.position + Vector3.down * 0.1f;
         int layer_id = 1 << LayerMask.NameToLayer("Ground");
 

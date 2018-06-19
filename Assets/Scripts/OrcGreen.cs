@@ -31,8 +31,6 @@ public class OrcGreen : MonoBehaviour {
 
     private void Start()
     {
-
-//        rabbit_position = HeroRabbit.lastRabbit.transform.position;
         mode = Mode.GoToA;
     }
 
@@ -65,9 +63,42 @@ public class OrcGreen : MonoBehaviour {
 
         if(mode == Mode.Attack)
         {
-            Debug.Log("Attack");
+            //Debug.Log("Attack");
             transform.position = Vector2.MoveTowards(gameObject.transform.position, rabbit.transform.position, speed * Time.deltaTime);
+            //TODO: set run animation
+
+            if (HeroRabbit.lastRabbit.transform.position.x < Mathf.Min(transformA.position.x, transformB.position.x) ||
+                HeroRabbit.lastRabbit.transform.position.x > Mathf.Max(transformA.position.x, transformB.position.x))
+            {
+                //TODO: if rabbit out of zone - orc idle animation return
+            }
         }
 
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HeroRabbit rabbit = collision.collider.GetComponent<HeroRabbit>();
+        if(rabbit != null)
+        {
+           foreach(ContactPoint2D point in collision.contacts)
+            {
+                Debug.Log(point.normal);
+                Debug.DrawLine(point.point, point.point + point.normal, Color.red, 10);
+
+                if(Mathf.Abs(point.point.y) >= 0.6f)
+                {
+                    Hurt();
+                }else
+                {
+                    Debug.Log("Not killed");
+                }
+            }
+        }
+    }
+
+    public void Hurt()
+    {
+        Destroy(this.gameObject);
     }
 }
