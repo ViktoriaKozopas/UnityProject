@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrkGreen : MonoBehaviour {
+public class OrcGreen : MonoBehaviour {
     public float speed;
-    //public float delay;
-    //private float platformTimer;
 
     public Transform transformA;
     public Transform transformB;
@@ -13,7 +11,16 @@ public class OrkGreen : MonoBehaviour {
     Rigidbody2D orcBody;
     SpriteRenderer orcSprite;
 
-    bool onRight;
+    Vector3 rabbit_position;
+
+    public enum Mode
+    {
+        GoToA,
+        GoToB,
+        Attack
+    }
+
+    Mode mode;
 
     void Awake()
     {
@@ -21,19 +28,26 @@ public class OrkGreen : MonoBehaviour {
         orcSprite = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+
+        rabbit_position = HeroRabbit.lastRabbit.transform.position;
+        mode = Mode.GoToA;
+    }
+
     void FixedUpdate()
     {
-        orcSprite.flipX = onRight;
+        orcSprite.flipX = mode == Mode.GoToB ? true : false;
         if (gameObject.transform.position.x < transformA.position.x)
         {
-            onRight = true;
+            mode = Mode.GoToB;
         }
         else if (gameObject.transform.position.x > transformB.position.x)
         {
-            onRight = false;
+            mode = Mode.GoToA;
         }
 
-        if (onRight)
+        if (mode == Mode.GoToB)
         {
             orcBody.velocity = new Vector2(speed, orcBody.velocity.y);
         }else

@@ -20,19 +20,23 @@ public class HeroRabbit : MonoBehaviour {
 
     [HideInInspector]
     public bool hasMushroom = false;
-/* //if timer
-    public float bombTime = 4f;
-    float _bombTime;
-*/
     Transform heroParent = null;
+
+    public static HeroRabbit lastRabbit;
 
     void Start () {
         rabbitBody = this.GetComponent<Rigidbody2D>();
+
         //Зберігаємо позицію кролика на початку
         LevelController.current.setStartPosition(transform.position);
 
         //Зберегти стандартний батьківський GameObject
         this.heroParent = this.transform.parent;
+    }
+
+    void Awake()
+    {
+        lastRabbit = this;
     }
 
     void FixedUpdate()
