@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrcGreen : MonoBehaviour {
+public class OrcBrown : MonoBehaviour {
+    private float currentSpeed;
     public float speed;
 
     public Transform transformA;
@@ -33,6 +34,7 @@ public class OrcGreen : MonoBehaviour {
     private void Start()
     {
         mode = Mode.GoToA;
+        currentSpeed = speed;
     }
 
     void FixedUpdate()
@@ -50,64 +52,32 @@ public class OrcGreen : MonoBehaviour {
 
         if (mode == Mode.GoToB)
         {
-            orcBody.velocity = new Vector2(speed, orcBody.velocity.y);
-        }else
+            orcBody.velocity = new Vector2(currentSpeed, orcBody.velocity.y);
+        }
+        else
         {
-            orcBody.velocity = new Vector2(-speed, orcBody.velocity.y);
+            orcBody.velocity = new Vector2(-currentSpeed, orcBody.velocity.y);
         }
 
-        // if rabbit in green orc zone
+        // if rabbit in orc zone
         if (HeroRabbit.lastRabbit.transform.position.x > Mathf.Min(transformA.position.x, transformB.position.x) &&
             HeroRabbit.lastRabbit.transform.position.x < Mathf.Max(transformA.position.x, transformB.position.x))
         {
             mode = Mode.Attack;
         }
 
-        if(mode == Mode.Attack)
+        if (mode == Mode.Attack)
         {
-            transform.position = Vector2.MoveTowards(gameObject.transform.position, rabbit.transform.position, speed * Time.deltaTime);
-            //TODO: set run animation
-            Animator animator = GetComponent<Animator>();
-            animator.SetBool("run", true);
+            //TODO: kill rabbit with carrot
+            currentSpeed = 0;
 
             if (HeroRabbit.lastRabbit.transform.position.x < Mathf.Min(transformA.position.x, transformB.position.x) ||
                 HeroRabbit.lastRabbit.transform.position.x > Mathf.Max(transformA.position.x, transformB.position.x))
             {
-                //TODO: if rabbit out of zone - orc idle animation return
+                //TODO: if rabbit out of zone - return orc idle animation return
+                currentSpeed = speed;
             }
         }
 
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        HeroRabbit rabbit = collision.collider.GetComponent<HeroRabbit>();
-        if(rabbit != null)
-        {
-           foreach(ContactPoint2D point in collision.contacts)
-            {
-                Debug.Log(point.normal);
-                Debug.DrawLine(point.point, point.point + point.normal, Color.red, 10);
-
-                if(Mathf.Abs(point.point.y) >= 0.5f)
-                {
-                    Hurt();
-                }else
-                {
-                    Animator animator = rabbit.GetComponent<Animator>();
-                    animator.SetTrigger("death");
-                    rabbit.isDead = true;
-                }
-            }
-        }
-    }
-
-    public void Hurt()
-    {
-        Animator animator = this.GetComponent<Animator>();
-        // TODO: play death animation - problem
-        animator.SetTrigger("death");
-        Debug.Log(animator);
-        Destroy(this.gameObject);
     }
 }
