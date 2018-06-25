@@ -22,7 +22,7 @@ public class OrcBrown : MonoBehaviour
     public float carrotInterval;
     public float currentInterval;
 
-    private float last_carrot = 0;
+    private bool die = false;
 
     public enum Mode
     {
@@ -71,7 +71,7 @@ public class OrcBrown : MonoBehaviour
         {
             orcBody.velocity = new Vector2(currentSpeed, orcBody.velocity.y);
         }
-        else if(mode == Mode.GoToA)
+        else if (mode == Mode.GoToA)
         {
             orcBody.velocity = new Vector2(-currentSpeed, orcBody.velocity.y);
         }
@@ -81,7 +81,8 @@ public class OrcBrown : MonoBehaviour
             HeroRabbit.lastRabbit.transform.position.x < Mathf.Max(transformA.position.x, transformB.position.x))
         {
             mode = Mode.Attack;
-        } else if (mode == Mode.Attack)
+        }
+        else if (mode == Mode.Attack)
         {
             mode = Mode.GoToA;
             currentSpeed = speed;
@@ -89,9 +90,9 @@ public class OrcBrown : MonoBehaviour
 
         if (mode == Mode.Attack)
         {
-            //TODO: kill rabbit with carrot
             currentSpeed = 0;
-            //this.launchCarrot(1);
+            Animator animatorOrc = GetComponent<Animator>();
+            animatorOrc.SetBool("attack", true);
 
             // wait for interval
             if (currentInterval <= 0)
@@ -101,6 +102,11 @@ public class OrcBrown : MonoBehaviour
                 // TODO: set direction depending on rabbit position
             }
         }
+        else
+        {
+            Animator animatorOrc = GetComponent<Animator>();
+            animatorOrc.SetBool("attack", false);
+        }
 
     }
 
@@ -108,13 +114,38 @@ public class OrcBrown : MonoBehaviour
     */
     void launchCarrot(float direction)
     {
-        //Створюємо копію Prefab
         GameObject obj = GameObject.Instantiate(this.prefabCarrot);
-        //Розміщуємо в просторі
-        //obj.transform.position = this.transform.position;
         obj.transform.position = transformCarrot.position;
-        //Запускаємо в рух
         Carrot carrot = obj.GetComponent<Carrot>();
-        //carrot.launch(direction);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HeroRabbit rabbit = collision.collider.GetComponent<HeroRabbit>();
+        if (rabbit != null)
+        {
+            ContactPoint2D point = collision.contacts[0];
+            Debug.Log(point.normal);
+            Debug.DrawLine(point.point, point.point + point.normal, Color.red, 10);
+
+            if (Mathf.Abs(point.point.y) >= 0.5f)
+            {
+                Animator animator = this.GetComponent<Animator>();
+                animator.SetTrigger("death");
+                die = true;
+            }
+            else if (!die)
+            {
+                Animator animator = rabbit.GetComponent<Animator>();
+                animator.SetTrigger("death");
+                rabbit.isDead = true;
+            }
+        }
+    }
+
+
+    public void Hurt()
+    { 
+        Destroy(this.gameObject);
     }
 }
