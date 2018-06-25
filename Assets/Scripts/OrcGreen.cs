@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrcGreen : MonoBehaviour {
+public class OrcGreen : MonoBehaviour
+{
     public float speed;
+    public float fastSpeed;
 
+    bool die = false;
     public Transform transformA;
     public Transform transformB;
     public Transform rabbit;
@@ -26,6 +29,7 @@ public class OrcGreen : MonoBehaviour {
 
     void Awake()
     {
+        fastSpeed = speed * 1.5f;
         orcBody = GetComponent<Rigidbody2D>();
         orcSprite = GetComponent<SpriteRenderer>();
     }
@@ -51,7 +55,8 @@ public class OrcGreen : MonoBehaviour {
         if (mode == Mode.GoToB)
         {
             orcBody.velocity = new Vector2(speed, orcBody.velocity.y);
-        }else
+        }
+        else if(mode == Mode.GoToA)
         {
             orcBody.velocity = new Vector2(-speed, orcBody.velocity.y);
         }
@@ -62,19 +67,26 @@ public class OrcGreen : MonoBehaviour {
         {
             mode = Mode.Attack;
         }
-
-        if(mode == Mode.Attack)
+        else if (mode == Mode.Attack)
         {
-            transform.position = Vector2.MoveTowards(gameObject.transform.position, rabbit.transform.position, speed * Time.deltaTime);
+            mode = Mode.GoToA;
+        }
+
+        if (mode == Mode.Attack)
+        {
+            orcBody.velocity = new Vector2(fastSpeed*((gameObject.transform.position.x - rabbit.transform.position.x)>0 ? -1:1),
+                orcBody.velocity.y);
+            //transform.position = Vector2.MoveTowards(gameObject.transform.position, rabbit.transform.position, speed * Time.deltaTime);
             //TODO: set run animation
             Animator animator = GetComponent<Animator>();
             animator.SetBool("run", true);
 
-            if (HeroRabbit.lastRabbit.transform.position.x < Mathf.Min(transformA.position.x, transformB.position.x) ||
-                HeroRabbit.lastRabbit.transform.position.x > Mathf.Max(transformA.position.x, transformB.position.x))
-            {
-                //TODO: if rabbit out of zone - orc idle animation return
-            }
+            orcSprite.flipX = gameObject.transform.position.x - rabbit.transform.position.x > 0 ? false : true;
+        }
+        else
+        {
+            Animator animator = GetComponent<Animator>();
+            animator.SetBool("run", false);
         }
 
     }
@@ -82,32 +94,36 @@ public class OrcGreen : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         HeroRabbit rabbit = collision.collider.GetComponent<HeroRabbit>();
-        if(rabbit != null)
+        if (rabbit != null)
         {
-           foreach(ContactPoint2D point in collision.contacts)
-            {
-                Debug.Log(point.normal);
-                Debug.DrawLine(point.point, point.point + point.normal, Color.red, 10);
+            ContactPoint2D point = collision.contacts[0];
+            Debug.Log(point.normal);
+            Debug.DrawLine(point.point, point.point + point.normal, Color.red, 10);
 
-                if(Mathf.Abs(point.point.y) >= 0.5f)
-                {
-                    Hurt();
-                }else
-                {
-                    Animator animator = rabbit.GetComponent<Animator>();
-                    animator.SetTrigger("death");
-                    rabbit.isDead = true;
-                }
+            if (Mathf.Abs(point.point.y) >= 0.5f)
+            {
+                Animator animator = this.GetComponent<Animator>();
+                animator.SetTrigger("death");
+                die = true;
             }
+            else if(!die)
+            {
+                Animator animatorOrc = GetComponent<Animator>();
+                animatorOrc.SetTrigger("attack");
+
+                Animator animator = rabbit.GetComponent<Animator>();
+                animator.SetTrigger("death");
+                rabbit.isDead = true;
+
+
+            }
+
         }
     }
 
     public void Hurt()
     {
-        Animator animator = this.GetComponent<Animator>();
-        // TODO: play death animation - problem
-        animator.SetTrigger("death");
-        Debug.Log(animator);
+        //Debug.Log(animator);
         Destroy(this.gameObject);
     }
 }
