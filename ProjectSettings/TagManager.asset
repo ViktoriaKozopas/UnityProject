@@ -38,6 +38,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: FarBackground
+    uniqueID: 818223375
+    locked: 0
+  - name: NearBackground
+    uniqueID: 2934799995
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 404597229
+    locked: 0
+  - name: Player
+    uniqueID: 589555077
     locked: 0

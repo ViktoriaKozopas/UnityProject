@@ -5,9 +5,10 @@ using UnityEngine;
 public class HeroFollow : MonoBehaviour {
 
     public HeroRabbit rabbit;
-	
-	// Update is called once per frame
-	void Update () {
+    public GameObject background;
+
+    // Update is called once per frame
+    void Update () {
         //Отримуємо доступ до компонента Transform
         //це Скорочення до GetComponent<Transform>
         Transform rabit_transform = rabbit.transform;
@@ -25,5 +26,6 @@ public class HeroFollow : MonoBehaviour {
 
         //Встановлюємо координати камери
         camera_transform.position = camera_position;
+        background.transform.position = new Vector3(camera_position.x, camera_position.y, 0);
     }
 }
